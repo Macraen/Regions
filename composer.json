@@ -1,0 +1,23 @@
+{
+    "name": "cepd-tech/regions",
+    "description": "N/A",
+    "type": "magento2-module",
+    "license": [
+        "MIT"
+    ],
+    "version": "0.0.1",
+    "authors": [
+        {
+            "name": "CepdTech"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "CepdTech\\Regions\\": ""
+        }
+    }
+}
+
