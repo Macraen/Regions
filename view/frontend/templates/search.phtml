@@ -1,0 +1,30 @@
+<?php
+/** @var $block \CepdTech\Regions\Block\Search */
+/** @var $escaper \Magento\Framework\Escaper */
+
+$apiKey = $escaper->escapeHtml($block->getApiKey());
+?>
+<div class="address-search__controls">
+    <input name="address_search" type="text" class="address-search__input" data-mage-init='{"addressSearch": {}}'>
+    <span class="address-search__clear" data-search="clear">x</span>
+    <div class="address-search__error mage-error" generated="true" data-search="error"></div>
+</div>
+
+<div class="address-search__controls address-search__controls_modal" data-search="container">
+    <input name="address_search" type="text" class="address-search__input" data-mage-init='{"addressSearch": {}}'>
+    <span class="address-search__clear" data-search="clear">x</span>
+    <div class="address-search__error mage-error" generated="true" data-search="error"></div>
+</div>
+
+<?php if ($apiKey) : ?>
+    <script type="text/x-magento-init">
+        {
+            ".address-search__input": {
+                "addressSearch": {
+                    "country": "<?= $escaper->escapeHtml($block->getCountry()) ?>",
+                    "apiKey": "<?= $apiKey ?>"
+                }
+            }
+        }
+    </script>
+<?php endif ?>

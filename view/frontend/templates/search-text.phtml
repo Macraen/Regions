@@ -1,0 +1,10 @@
+<?php
+/** @var $block \CepdTech\Regions\Block\Search */
+/** @var $escaper \Magento\Framework\Escaper */
+
+$text = $block->getHomepageText();
+?>
+
+<?php if ($text) : ?>
+    <h1 class="address-search__title"><?= $escaper->escapeHtml($text); ?></h1>
+<?php endif ?>

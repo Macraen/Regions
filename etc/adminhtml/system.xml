@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="cepdtech_regions" translate="label" sortOrder="210" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Regions</label>
+            <tab>monogo</tab>
+            <resource>CepdTech_Regions::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Setttings</label>
+                <field id="api_key" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" type="text" sortOrder="20">
+                    <label>Api Key</label>
+                </field>
+                <field id="homepage_text" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" type="text" sortOrder="20">
+                    <label>Homepage text</label>
+                </field>
+                <field id="country" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Country</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model></field>
+            </group>
+        </section>
+    </system>
+</config>
