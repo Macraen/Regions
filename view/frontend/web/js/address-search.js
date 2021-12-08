@@ -92,8 +92,9 @@ define([
             $.ajax({
                 url: 'rest/all/V1/regions/shop',
                 type: 'POST',
-                data: data,
-                dataType: 'JSON'
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                dataType: 'json'
             }).done(function (response) {
                 if (response.url) {
                     window.location.url = response.url;

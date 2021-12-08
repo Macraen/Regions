@@ -3,4 +3,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="CepdTech\Regions\Api\ShopRepositoryInterface" type="CepdTech\Regions\Model\ShopRepository"/>
+    <preference for="CepdTech\Regions\Api\CustomerDeliveryAddressInterface"
+                type="CepdTech\Regions\Model\CustomerDeliveryAddress"/>
+    <preference for="CepdTech\Regions\Api\Data\ShopResponseInterface" type="CepdTech\Regions\Model\ShopResponse"/>
 </config>

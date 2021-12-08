@@ -7,8 +7,8 @@ use Magento\Framework\Exception\InputException;
 interface ShopRepositoryInterface
 {
     /**
-     * @param string $coordinates
-     * @return mixed
+     * @param \CepdTech\Regions\Api\CustomerDeliveryAddressInterface $customerDeliveryAddress
+     * @return \CepdTech\Regions\Api\Data\ShopResponseInterface
      */
-    public function getShopByCoordinates($coordinates);
+    public function getShopByCoordinates(\CepdTech\Regions\Api\CustomerDeliveryAddressInterface $customerDeliveryAddress);
 }
