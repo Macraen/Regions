@@ -90,7 +90,7 @@ define([
             let self = this;
 
             $.ajax({
-                url: 'url',
+                url: 'rest/all/V1/regions/shop',
                 type: 'POST',
                 data: data,
                 dataType: 'JSON'
