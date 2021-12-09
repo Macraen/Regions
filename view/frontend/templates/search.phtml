@@ -5,14 +5,14 @@
 $apiKey = $escaper->escapeHtml($block->getApiKey());
 ?>
 <div class="address-search__controls">
-    <input name="address_search" type="text" class="address-search__input" data-mage-init='{"addressSearch": {}}'>
-    <span class="address-search__clear" data-search="clear">x</span>
+    <input name="address_search" type="text" class="address-search__input" placeholder="<?= __('Enter your shipping address') ?>"  data-mage-init='{"addressSearch": {}}'>
+    <span class="address-search__clear" data-search="clear"></span>
     <div class="address-search__error mage-error" generated="true" data-search="error"></div>
 </div>
 
 <div class="address-search__controls address-search__controls_modal" data-search="container">
-    <input name="address_search" type="text" class="address-search__input" data-mage-init='{"addressSearch": {}}'>
-    <span class="address-search__clear" data-search="clear">x</span>
+    <input name="address_search" type="text" class="address-search__input" placeholder="<?= __('Enter your shipping address') ?>" data-mage-init='{"addressSearch": {}}'>
+    <span class="address-search__clear" data-search="clear"></span>
     <div class="address-search__error mage-error" generated="true" data-search="error"></div>
 </div>
 
