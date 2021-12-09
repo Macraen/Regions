@@ -2,9 +2,39 @@
     .address-search {
         max-width: @layout__max-width;
         padding: 0 @layout-indent__width;
+        margin: 0 auto;
         &__controls {
+            position: relative;
             &_modal {
                 display: none;
+            }
+        }
+
+        &__clear {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transform: translate(0, -50%);
+            &:after,
+            &:before {
+                content: '';
+                width: 1px;
+                height: 10px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                background: #000;
+            }
+
+            &:after {
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+
+            &:before {
+                transform: translate(-50%, -50%) rotate(-45deg);
             }
         }
     }
