@@ -14,6 +14,9 @@
                 <field id="homepage_text" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" type="text" sortOrder="20">
                     <label>Homepage text</label>
                 </field>
+                <field id="error_text" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" type="text" sortOrder="20">
+                    <label>Error message when site not allowed for customer</label>
+                </field>
                 <field id="country" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Country</label>
                     <source_model>Magento\Directory\Model\Config\Source\Country</source_model></field>

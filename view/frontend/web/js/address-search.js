@@ -63,13 +63,11 @@ define([
                 }
 
                 let placeData = {
-                    customerDeliveryAddress: {
-                            street: place.address_components[1].long_name + ' ' + place.address_components[0].long_name,
-                            city: place.address_components[3].long_name,
-                            country: place.address_components[6].long_name,
-                            latitude: place.geometry.location.lat(),
-                            longitude: place.geometry.location.lng()
-                        }
+                        street: place.address_components[1].long_name + ' ' + place.address_components[0].long_name,
+                        city: place.address_components[3].long_name,
+                        country: place.address_components[6].long_name,
+                        latitude: place.geometry.location.lat(),
+                        longitude: place.geometry.location.lng()
                     }
 
                 if (self.options.hasError) {
@@ -88,7 +86,8 @@ define([
             let self = this;
 
             $.ajax({
-                url: 'rest/all/V1/regions/shop',
+                // url: 'rest/all/V1/regions/shop',
+                url: 'regions/index/getshopbycoordinates',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
