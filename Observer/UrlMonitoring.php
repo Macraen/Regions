@@ -19,15 +19,16 @@ class UrlMonitoring implements ObserverInterface
     private $scopeConfig;
     public $messageManager;
 
-    public function __construct (\Psr\Log\LoggerInterface $logger,
-                                 \Magento\Customer\Model\Session $customerSession,
-                                 AccountManagementInterface $managmentInterface,
-                                 RedirectFactory $redirectFactory,
-                                 \Magento\Store\Model\StoreManagerInterface         $storeManager,
-                                 \Magento\Framework\App\ResponseFactory $responseFactory,
-                                 \Magento\Framework\UrlInterface $url,
-                                 \Magento\Framework\Message\ManagerInterface $messageManager,
-                                 \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig){
+    public function __construct(\Psr\Log\LoggerInterface $logger,
+                                \Magento\Customer\Model\Session $customerSession,
+                                AccountManagementInterface $managmentInterface,
+                                RedirectFactory $redirectFactory,
+                                \Magento\Store\Model\StoreManagerInterface $storeManager,
+                                \Magento\Framework\App\ResponseFactory $responseFactory,
+                                \Magento\Framework\UrlInterface $url,
+                                \Magento\Framework\Message\ManagerInterface $messageManager,
+                                \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig)
+    {
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->managmentInterface = $managmentInterface;
@@ -39,7 +40,8 @@ class UrlMonitoring implements ObserverInterface
         $this->url = $url;
     }
 
-    public function getConfig($configPath) {
+    public function getConfig($configPath)
+    {
         return $this->scopeConfig->getValue(
             $configPath,
             ScopeInterface::SCOPE_STORE,
@@ -49,20 +51,21 @@ class UrlMonitoring implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-        $this->logger->info('Event Triggered');
-        $url = \Magento\Framework\App\ObjectManager::getInstance()
-            ->get('Magento\Framework\UrlInterface');
-        $allowUrl = $this->customerSession->getAllowedWebsites();
-//        $currWeb = $url->getCurrentUrl();
-//        $baseUrl = $url->getBaseUrl();
-        $baseUrl = $this->storeManager->getStore()->getBaseUrl() ;
+        $this->logger->info('Observer url monitoring');
+        $allowUrls = array();
+        array_push($allowUrls, $this->customerSession->getAllowedWebsites());
+        $this->logger->info(print_r($allowUrls, true));
+        $newWebsiteUrl = $this->storeManager->getStore()->getBaseUrl();
         $website = $this->storeManager->getWebsite('base');
-        $mainUrl = $this->scopeConfig->getValue('web/secure/base_url', 'website', $website->getCode());
-        if ($baseUrl != $mainUrl){
-            if ($mainUrl != $allowUrl || $baseUrl != $allowUrl) {
-                $this->responseFactory->create()->setRedirect($mainUrl)->sendResponse();
-                $this->messageManager->addErrorMessage(__($this->getConfig(self::CONFIG_ERROR_TEXT)));
-                return $this;
+        $baseWebsiteUrl = $this->scopeConfig->getValue('web/secure/base_url', 'website', $website->getCode());
+        if ($allowUrls) {
+            if ($newWebsiteUrl != $baseWebsiteUrl) { //check if customer on the main page (like eskulap.pl)
+                if (!in_array($baseWebsiteUrl, $allowUrls) || !in_array($newWebsiteUrl, $allowUrls)) {
+                    $this->responseFactory->create()->setRedirect($baseWebsiteUrl)->sendResponse();
+                    $this->messageManager->addErrorMessage(__($this->getConfig(self::CONFIG_ERROR_TEXT)));
+                    $this->logger->info('Error link');
+                    return $this;
+                }
             }
         }
         return true;

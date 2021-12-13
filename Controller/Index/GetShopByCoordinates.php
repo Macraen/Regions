@@ -59,13 +59,32 @@ class GetShopByCoordinates extends \Magento\Framework\App\Action\Action implemen
 
         $eprufErrorMsg = null;
         //$eprufErrorMsg = 'Have not these pharmacies'; //TODO for test
-        //$eprufShopCode = 'base'; //TODO for test
-        $eprufShopCode = 'pl_wdr_1_3';
+        $eprufShopCode = 'base'; //TODO for test
+        //$eprufShopCode = 'pl_wdr_1_3';
         try {
             $website = $this->storeManager->getWebsite($eprufShopCode);
             $websiteUrl = $this->scopeConfig->getValue('web/secure/base_url', 'website', $website->getCode());
 
-            $this->customerSession->setAllowedWebsites($websiteUrl);
+            $allowUrl = $this->customerSession->getAllowedWebsites();
+
+            $allowUrls = array();
+            if(!is_array($allowUrl)){
+                array_push($allowUrls, $allowUrl);
+            } else {
+                $allowUrls = $allowUrl;
+            }
+
+            $checker = false;
+            foreach ($allowUrls as $url){
+                if ($url == $websiteUrl) {
+                    $checker = true;
+                }
+            }
+            if($checker == false) {
+                array_push($allowUrls, $websiteUrl);
+            }
+
+            $this->customerSession->setAllowedWebsites($allowUrls);
             $this->customerSession->setCustomerDeliveryAddress($customerDeliveryAddress);
         } catch (\Exception $e) {
             $result = array('error' => $e->getMessage());
