@@ -54,13 +54,13 @@ class GetShopByCoordinates extends \Magento\Framework\App\Action\Action implemen
 
     public function execute()
     {
+        $result = null;
         $customerDeliveryAddress = $this->getPostParams();
 
         $eprufErrorMsg = null;
         //$eprufErrorMsg = 'Have not these pharmacies'; //TODO for test
-        $eprufShopCode = 'pl_wdr_1_3';
         //$eprufShopCode = 'base'; //TODO for test
-
+        $eprufShopCode = 'pl_wdr_1_3';
         try {
             $website = $this->storeManager->getWebsite($eprufShopCode);
             $websiteUrl = $this->scopeConfig->getValue('web/secure/base_url', 'website', $website->getCode());

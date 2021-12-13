@@ -13,7 +13,7 @@ class CustomSection implements SectionSourceInterface
 
     public function getSectionData()
     {
-        $customerSession = json_decode(json_encode($this->customerSession->getMyValue()), true);
+        $customerSession = json_decode(json_encode($this->customerSession->getCustomerDeliveryAddress()), true);
         return $customerSession ? $customerSession : array( 'error' => 'no address' ) ;
     }
 }
