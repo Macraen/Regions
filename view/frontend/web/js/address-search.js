@@ -1,8 +1,9 @@
 define([
-    'jquery',
-    'mage/translate',
+    "jquery",
+    "mage/translate",
+    "addressModel",
     "Magento_Ui/js/modal/modal"
-], function ($, $t, modal) {
+], function ($, $t, addressModel) {
     'use strict';
 
     $.widget('eskulap.addressSearch',{
@@ -18,6 +19,12 @@ define([
             let self = this,
                 googleapis = 'https://maps.googleapis.com/maps/api/js?key=' + self.options.apiKey + '&libraries=places&language=en-US';
 
+            // will be finished after backend functionality
+            //
+            // if () {
+            //     addressModel.setAddress();
+            // }
+
             require([
                 googleapis
             ], function () {
@@ -30,7 +37,7 @@ define([
                 options = {
                     types: ["address"]
                 },
-                autocomplete = null;
+                autocomplete;
 
             if (self.options.country) {
                 options.componentRestrictions = {country: self.options.country};
@@ -78,15 +85,10 @@ define([
             });
         },
 
-        openModal: function () {
-            console.log('modal');
-        },
-
         sendAjax: function (data) {
             let self = this;
 
             $.ajax({
-                // url: 'rest/all/V1/regions/shop',
                 url: 'regions/index/getshopbycoordinates',
                 type: 'POST',
                 contentType: 'application/json',
@@ -96,8 +98,7 @@ define([
                 if (response.url) {
                     window.location.url = response.url;
                 } else {
-                    $.proxy(self.addErrorMessage(response.error), self);
-                    response.error
+                    $.proxy(self.addErrorMessage(response.message), self);
                 }
             }).fail(function (response) {
 
