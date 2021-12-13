@@ -1,7 +1,9 @@
 <?php
 namespace CepdTech\Regions\Block;
 
+use Magento\Customer\Model\Session;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\ScopeInterface;
@@ -18,6 +20,16 @@ class Search extends Template
     protected $scopeConfig;
 
     /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * @var Session
+     */
+    protected $customerSession;
+
+    /**
      * @var StoreManagerInterface
      */
     protected $storeManager;
@@ -32,15 +44,21 @@ class Search extends Template
      * @param Context $context
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
+     * @param Session $customerSession
+     * @param SerializerInterface $serializer
      */
     public function __construct(
         Context $context,
         ScopeConfigInterface $scopeConfig,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        Session $customerSession,
+        SerializerInterface $serializer
     ) {
         parent::__construct($context);
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
+        $this->customerSession = $customerSession;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -78,5 +96,11 @@ class Search extends Template
      */
     public function getHomepageText() {
         return $this->getConfig(self::CONFIG_HOMEPAGE_TEXT);
+    }
+
+    public function getCustomerAddress() {
+         $address = $this->customerSession->getCustomerDeliveryAddress();
+
+         return $address ? $address->street . ', ' . $address->city . ', ' . $address->country : '';
     }
 }

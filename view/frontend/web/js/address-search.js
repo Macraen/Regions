@@ -19,11 +19,9 @@ define([
             let self = this,
                 googleapis = 'https://maps.googleapis.com/maps/api/js?key=' + self.options.apiKey + '&libraries=places&language=en-US';
 
-            // will be finished after backend functionality
-            //
-            // if () {
-            //     addressModel.setAddress();
-            // }
+            if (self.options.addressData) {
+                addressModel.setAddress(self.options.addressData);
+            }
 
             require([
                 googleapis
@@ -106,12 +104,12 @@ define([
         },
 
         addErrorMessage: function (message) {
-            this.element.siblings(this.options.errorContainer).text(message);
+            this.element.parent().siblings(this.options.errorContainer).text(message);
             this.options.hasError = true;
         },
 
         removeErrorMessage: function () {
-            this.element.siblings(this.options.errorContainer).empty();
+            this.element.parent().siblings(this.options.errorContainer).empty();
             this.options.hasError = false;
         }
     });
