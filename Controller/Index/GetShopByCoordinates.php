@@ -1,4 +1,5 @@
 <?php
+
 namespace CepdTech\Regions\Controller\Index;
 
 use CepdTech\Regions\Model\SaveCustomerAddress;
@@ -23,50 +24,40 @@ class GetShopByCoordinates extends \Magento\Framework\App\Action\Action implemen
         \Magento\Framework\View\Result\PageFactory $pageFactory,
         \Magento\Framework\App\Response\Http $response,
         \Magento\Framework\App\Action\Context $context,
-        \Magento\Store\Model\StoreManagerInterface         $storeManager,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Customer\Model\Session\Proxy              $customerSession,
-        \CepdTech\Regions\Api\Data\ShopResponseInterface   $shopResponse,
+        \Magento\Customer\Model\Session\Proxy $customerSession,
+        \CepdTech\Regions\Api\Data\ShopResponseInterface $shopResponse,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
     )
-   {
-       $this->response = $response;
-       $this->request = $request;
-       $this->_pageFactory = $pageFactory;
-       $this->storeManager = $storeManager;
-       $this->scopeConfig = $scopeConfig;
-       $this->customerSession = $customerSession;
-       $this->shopResponse = $shopResponse;
-       $this->logger = $logger;
+    {
+        $this->response = $response;
+        $this->request = $request;
+        $this->_pageFactory = $pageFactory;
+        $this->storeManager = $storeManager;
+        $this->scopeConfig = $scopeConfig;
+        $this->customerSession = $customerSession;
+        $this->shopResponse = $shopResponse;
+        $this->logger = $logger;
         $this->resultJsonFactory = $resultJsonFactory;
-       $this->resultRedirectFactory = $resultRedirectFactory;
+        $this->resultRedirectFactory = $resultRedirectFactory;
 
-       return parent::__construct($context);
-   }
-
-    public function setValue($value)
-    {
-        return $this->customerSession->setMyValue($value);
+        return parent::__construct($context);
     }
 
-    public function getValue()
+    public function getPostParams()
     {
-        return $this->customerSession->getMyValue();
-    }
-
-    public function getPost()
-    {
-        return $this->request->getPostValue();
+        return json_decode(file_get_contents("php://input"));
     }
 
     public function execute()
     {
-        $customerDeliveryAddress = json_decode(file_get_contents("php://input"));
+        $customerDeliveryAddress = $this->getPostParams();
 
         $eprufErrorMsg = null;
-//        $eprufErrorMsg = 'Have not these pharmacies'; //TODO for test
+        //$eprufErrorMsg = 'Have not these pharmacies'; //TODO for test
         $eprufShopCode = 'pl_wdr_1_3';
         //$eprufShopCode = 'base'; //TODO for test
 
@@ -75,25 +66,24 @@ class GetShopByCoordinates extends \Magento\Framework\App\Action\Action implemen
             $websiteUrl = $this->scopeConfig->getValue('web/secure/base_url', 'website', $website->getCode());
 
             $this->customerSession->setAllowedWebsites($websiteUrl);
-            $this->customerSession->setMyValue($customerDeliveryAddress);
-
+            $this->customerSession->setCustomerDeliveryAddress($customerDeliveryAddress);
         } catch (\Exception $e) {
-            throw new \Magento\Framework\Webapi\Exception(__($e->getMessage()), 400);
+            $result = array('error' => $e->getMessage());
         }
 
         if ($eprufErrorMsg) {
-            throw new \Magento\Framework\Webapi\Exception(__($eprufErrorMsg), 400);
+            $result = array('error' => $eprufErrorMsg);
         }
 
-        $this->shopResponse->setUrl($websiteUrl);
-
-        $redirect = array('url' => $websiteUrl);
+        if (!$result) {
+            $result = array('url' => $websiteUrl);
+        }
         $resultJson = $this->resultJsonFactory->create();
 
-        return $resultJson->setData($redirect);
+        return $resultJson->setData($result);
     }
 
-    public function createCsrfValidationException(RequestInterface $request): ? InvalidRequestException
+    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
     {
         return null;
     }
