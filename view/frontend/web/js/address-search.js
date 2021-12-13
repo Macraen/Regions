@@ -98,7 +98,7 @@ define([
                 if (response.url) {
                     window.location.url = response.url;
                 } else {
-                    $.proxy(self.addErrorMessage(response.message), self);
+                    $.proxy(self.addErrorMessage(response.error), self);
                 }
             }).fail(function (response) {
 
