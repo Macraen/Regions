@@ -39,3 +39,11 @@
         }
     }
 }
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .address-search {
+        &__clear {
+            display: none;
+        }
+    }
+}

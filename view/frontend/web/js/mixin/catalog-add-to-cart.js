@@ -12,7 +12,6 @@ define([
             },
 
             ajaxSubmit: function (form) {
-                debugger;
                 if (!addressModel.getAddress()) {
                     this.openModal();
                     return;

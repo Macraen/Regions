@@ -1,5 +1,5 @@
 define([], function () {
-    let address = null;
+    let address = '';
 
     return {
         setAddress: function (addressString) {
